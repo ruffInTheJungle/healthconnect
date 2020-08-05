@@ -37,7 +37,6 @@ public class HomeController {
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>)
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
         modelAndView.setViewName("home");
 
         for (GrantedAuthority authority : authorities) {

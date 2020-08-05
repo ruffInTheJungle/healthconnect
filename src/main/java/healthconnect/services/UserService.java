@@ -15,4 +15,6 @@ public interface UserService {
     List<UserServiceModel> getAllDoctors();
 
     User getUserByUsername(String username);
+
+    String getDoctorAppointmentsGreeting (String username);
 }

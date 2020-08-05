@@ -1,9 +1,11 @@
 package healthconnect.web.controllers;
 
+import healthconnect.models.binding.AppointmentConfirmationBindingModel;
 import healthconnect.models.binding.UserRegistrationBindingModel;
 import healthconnect.models.service.AppointmentServiceModel;
 import healthconnect.models.service.UserServiceModel;
 import healthconnect.models.view.AppointmentViewModel;
+import healthconnect.models.view.DepartmentViewModel;
 import healthconnect.models.view.DoctorViewModelMakeAppointment;
 import healthconnect.services.AppointmentService;
 import healthconnect.services.UserService;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +75,94 @@ public class AppointmentController {
         this.appointmentService.createAppointmentRequest(doctor, patientName);
 
         return "redirect:/appointments";
+    }
+
+
+    @GetMapping("/doctor/appointments")
+    public String getDoctorAppointments(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        String greeting = this.userService.getDoctorAppointmentsGreeting(username);
+
+        model.addAttribute("greeting", greeting);
+        return "doctors/doctors-appointments";
+    }
+
+    @GetMapping("/doctor/appointments/requested")
+    public String getDoctorRequestedAppointments(Model model) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<AppointmentViewModel> appointments = new ArrayList<>();
+
+        for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAllRequestedAppointmentsByDoctor(username)) {
+            AppointmentViewModel appointmentViewModel = this.modelMapper.map(appointmentServiceModel, AppointmentViewModel.class);
+            String date = getString(appointmentViewModel);
+            appointmentViewModel.setAppointmentTime(date);
+            appointments.add(appointmentViewModel);
+        }
+
+        model.addAttribute("appointments", appointments);
+
+        return "doctors/requested-appointments";
+    }
+
+    @GetMapping("/doctor/appointments/confirmed")
+    public String getDoctorConfirmedAppointments(Model model) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<AppointmentViewModel> appointments = new ArrayList<>();
+
+        for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAllConfirmedAppointmentsByDoctor(username)) {
+            AppointmentViewModel appointmentViewModel = this.modelMapper.map(appointmentServiceModel, AppointmentViewModel.class);
+            String date = getString(appointmentViewModel);
+            appointmentViewModel.setAppointmentTime(date);
+            appointments.add(appointmentViewModel);
+        }
+
+        model.addAttribute("appointments", appointments);
+
+        return "doctors/confirmed-appointments";
+    }
+
+    @GetMapping("/doctor/appointments/archived")
+    public String getDoctorArchivedAppointments(Model model) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<AppointmentViewModel> appointments = new ArrayList<>();
+
+        for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAllArchivedAppointmentsByDoctor(username)) {
+            AppointmentViewModel appointmentViewModel = this.modelMapper.map(appointmentServiceModel, AppointmentViewModel.class);
+            String date = getString(appointmentViewModel);
+            appointmentViewModel.setAppointmentTime(date);
+            appointments.add(appointmentViewModel);
+        }
+
+        model.addAttribute("appointments", appointments);
+
+        return "doctors/archived-appointments";
+    }
+
+
+
+    @RequestMapping("/doctor/confirmAppointment")
+    public String getConfirmAppointment (@RequestParam("id") Long id, Model model) {
+
+
+        model.addAttribute("id", id);
+
+        return "doctors/confirm-appointment";
+    }
+
+    @PostMapping("/doctor/confirmAppointment")
+    public String postConfirmAppointment (@ModelAttribute("appointmentConfirmationBindingModel")
+                                                      AppointmentConfirmationBindingModel appointmentConfirmationBindingModel) {
+
+
+        int davidime = 5;
+        return "redirect:/doctor/appointments/requested";
     }
 
 

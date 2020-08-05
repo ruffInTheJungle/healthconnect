@@ -121,4 +121,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public User getUserByUsername(String username) {
         return this.userRepository.findByUsername(username).orElse(null);
     }
+
+    @Override
+    public String getDoctorAppointmentsGreeting(String username) {
+        User user = this.userRepository.findByUsername(username).orElse(null);
+
+        String greeting = "";
+        if (user != null){
+            greeting = user.getSalutation() + " " + user.getLastName()+ "`s Appointments";
+        }
+        return greeting;
+    }
 }

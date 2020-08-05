@@ -1660,6 +1660,7 @@ section {
   padding: 0 0 30px 0;
   color: #555555;
   font-size: 14px;
+
 }
 
 #footer .footer-top {
@@ -1790,6 +1791,8 @@ section {
   padding-top: 30px;
 }
 
+
+
 #footer .credits {
   padding-top: 10px;
   text-align: center;
@@ -1864,3 +1867,26 @@ padding-bottom: 150px;
   padding-top: 100px;
 }
 
+.push-down-footer{
+  padding-bottom: 120px;
+}
+
+
+.bordered-button {
+  font-size: 15px;
+  background: white;
+  border: 0;
+  margin-left: 20px;
+  padding: 6px 10px;
+  color: #3fbbc0;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+.bordered-button [type="submit"]:hover {
+  background: #65c9cd;
+}
+
+.dark-green{
+  color: #0c5460;
+}

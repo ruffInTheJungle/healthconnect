@@ -52,5 +52,31 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
+    @Override
+    public List<AppointmentServiceModel> getAllRequestedAppointmentsByDoctor(String username) {
+        List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+        for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "REQUESTED")) {
+            requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
+        }
+        return requestedAppointments;
+    }
+
+    @Override
+    public List<AppointmentServiceModel> getAllConfirmedAppointmentsByDoctor(String username) {
+        List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+        for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "CONFIRMED")) {
+            requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
+        }
+        return requestedAppointments;
+    }
+
+    @Override
+    public List<AppointmentServiceModel> getAllArchivedAppointmentsByDoctor(String username) {
+        List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+        for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "ARCHIVED")) {
+            requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
+        }
+        return requestedAppointments;
+    }
 
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findAllByPatientUsername (String patientUsername);
+    List<Appointment> findAllByDoctorUsernameAndStatusName(String username, String statusName);
 }
