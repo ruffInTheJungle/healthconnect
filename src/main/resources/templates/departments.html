@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+
+<body>
+
+<header id="header" class="fixed-top">
+    <th:block th:include="~{/fragments/user-nav}"></th:block>
+</header><!-- End Header -->
+
+<div class="move"></div>
+<section id="doctors" class="doctors section-bg">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Departments</h2>
+            <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
+                consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat
+                sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" th:each="i : ${departments}" th:object="${i}">
+                <a th:href="@{/department/(name = *{name})}">
+                <div class="member" data-aos="fade-up" data-aos-delay="100" >
+                    <div class="member-img" >
+                        <img th:src="'' + *{getImageURL()}" class="img-fluid" alt="">
+                    </div>
+                    <div class="member-info">
+                        <h4 th:text="*{getName()}"></h4>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section><!-- End Doctors Section -->
+
+<!-- ======= Cta Section ======= -->
+<th:block th:include="~{/fragments/make-appointment}"></th:block>
+<!-- End Cta Section -->
+
+<footer id="footer">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer><!-- End Footer -->
+
+<th:block th:include="~{/fragments/scripts}"></th:block>
+</body>
