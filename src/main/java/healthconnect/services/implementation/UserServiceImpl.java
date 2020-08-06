@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
 
-
     private UserDetails map(User userEntity) {
         return new org.springframework.security.core.userdetails.User(
                 userEntity.getUsername(),
@@ -58,13 +57,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         Optional<User> userEntityOpt = userRepository.findByUsername(username);
         return userEntityOpt.
                 map(this::map).
-                orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found!"));    }
+                orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found!"));
+    }
 
     @Override
     public String getGreeting(String username) {
         User user = this.userRepository.findByUsername(username).orElse(null);
         String greeting = "";
-        if (user != null){
+        if (user != null) {
             greeting = "Welcome " + user.getSalutation() + " " + user.getLastName();
         }
         return greeting;
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         for (int i = 0; i < users.size(); i++) {
             for (RoleServiceModel role : users.get(i).getRoles()) {
-                if (role.getName().equals("ROLE_ADMIN")){
+                if (role.getName().equals("ROLE_ADMIN")) {
                     users.remove(i);
                     i--;
                     break;
@@ -127,9 +127,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User user = this.userRepository.findByUsername(username).orElse(null);
 
         String greeting = "";
-        if (user != null){
-            greeting = user.getSalutation() + " " + user.getLastName()+ "`s Appointments";
+        if (user != null) {
+            greeting = user.getSalutation() + " " + user.getLastName() + "`s Appointments";
         }
         return greeting;
+    }
+
+    @Override
+    public String getUserFullName(Long patientId) {
+        User user = this.userRepository.findOneById(patientId);
+        return user.getSalutation() + " " + user.getFirstName() + " " + user.getLastName();
     }
 }

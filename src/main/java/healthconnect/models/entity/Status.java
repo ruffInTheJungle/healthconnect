@@ -26,8 +26,6 @@ public class Status extends BaseEntity{
     @ValidateRole(acceptedValues = {"REQUESTED", "CONFIRMED", "ARCHIVED"}, message = INVALID_STATUS)
     private String name;
     @NotNull
-    private LocalDateTime lastStatusChangeDate;
-    @NotNull
     @Column(name = "status_description", columnDefinition = "TEXT")
     private String statusDescription;
 

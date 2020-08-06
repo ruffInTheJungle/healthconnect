@@ -39,5 +39,8 @@ public class Prescription extends BaseEntity{
     @NotNull
     @Size(min = 3, max = 2000, message = INVALID_PRESCRIPTION_MESSAGE)
     private String prescriptionNotes;
+    @OneToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
+    private Appointment appointment;
 
 }

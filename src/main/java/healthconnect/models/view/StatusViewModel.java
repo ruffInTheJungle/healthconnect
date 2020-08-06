@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 
 public class StatusViewModel {
 
-    private Long id;
     private String name;
-    private LocalDateTime lastStatusChangeDate;
     private String statusDescription;
 
 }

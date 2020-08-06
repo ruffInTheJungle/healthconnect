@@ -9,5 +9,9 @@ public interface StatusService {
 
     Status getRequestedStatus ();
 
+    Status getConfirmedStatus ();
+
     List<StatusServiceModel> getAllStatuses();
+
+    Status getArchivedStatus();
 }

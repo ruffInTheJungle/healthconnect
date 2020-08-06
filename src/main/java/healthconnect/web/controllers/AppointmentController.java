@@ -146,9 +146,8 @@ public class AppointmentController {
     }
 
 
-
     @RequestMapping("/doctor/confirmAppointment")
-    public String getConfirmAppointment (@RequestParam("id") Long id, Model model) {
+    public String getConfirmAppointment(@RequestParam("id") Long id, Model model) {
 
 
         model.addAttribute("id", id);
@@ -157,11 +156,22 @@ public class AppointmentController {
     }
 
     @PostMapping("/doctor/confirmAppointment")
-    public String postConfirmAppointment (@ModelAttribute("appointmentConfirmationBindingModel")
-                                                      AppointmentConfirmationBindingModel appointmentConfirmationBindingModel) {
+    public String postConfirmAppointment(@ModelAttribute("appointmentConfirmationBindingModel")
+                                                 AppointmentConfirmationBindingModel appointmentConfirmationBindingModel) {
 
+        this.appointmentService
+                .confirmAppointment(appointmentConfirmationBindingModel.getId(), appointmentConfirmationBindingModel.getDateAndTime());
 
-        int davidime = 5;
+        return "redirect:/doctor/appointments/requested";
+    }
+
+    @RequestMapping("/doctor/archiveAppointment")
+    public String postArchiveAppointment(@RequestParam("id")
+                                                 Long id) {
+
+        this.appointmentService
+                .archiveAppointment(id);
+
         return "redirect:/doctor/appointments/requested";
     }
 

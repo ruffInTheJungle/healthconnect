@@ -1,19 +1,16 @@
 package healthconnect.web.controllers;
 
-import healthconnect.models.service.AppointmentServiceModel;
+import healthconnect.models.binding.PrescriptionBindingModel;
 import healthconnect.models.service.PrescriptionServiceModel;
-import healthconnect.models.view.AppointmentViewModel;
-import healthconnect.models.view.DepartmentViewModel;
 import healthconnect.models.view.PrescriptionViewModel;
+import healthconnect.services.AppointmentService;
 import healthconnect.services.PrescriptionService;
+import healthconnect.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +19,15 @@ import java.util.List;
 public class PrescriptionController {
 
     private final PrescriptionService prescriptionService;
+    private final UserService userService;
+    private final AppointmentService appointmentService;
     private final ModelMapper modelMapper;
 
-    public PrescriptionController(PrescriptionService prescriptionService, ModelMapper modelMapper) {
+    public PrescriptionController(PrescriptionService prescriptionService, ModelMapper modelMapper, UserService userService, AppointmentService appointmentService) {
         this.prescriptionService = prescriptionService;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping("/prescriptions")
@@ -56,5 +57,26 @@ public class PrescriptionController {
         return "prescription";
     }
 
+    @RequestMapping("/doctor/issuePrescription")
+    public String archiveAppointmentAndIssuePrescription(@RequestParam(name = "appointmentId") String appointmentId,
+                                                         @RequestParam Long patientId, Model model) {
+
+
+        model.addAttribute("appointmentId", appointmentId);
+        model.addAttribute("patientId", patientId);
+        model.addAttribute("nameOfUser", this.userService.getUserFullName(patientId));
+        this.appointmentService.archiveAppointment(Long.parseLong(appointmentId));
+
+        return "doctors/prescription-form";
+    }
+
+    @PostMapping("/doctor/issuePrescription")
+    public String issuePrescription(@ModelAttribute("prescriptionBindingModel") PrescriptionBindingModel prescriptionBindingModel) {
+
+        prescriptionBindingModel.setDoctorUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        this.prescriptionService.issuePrescription(prescriptionBindingModel);
+
+        return "redirect:/doctor/appointments/archived";
+    }
 
 }

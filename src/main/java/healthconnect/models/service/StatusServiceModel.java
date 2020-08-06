@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class StatusServiceModel extends BaseServiceModel {
 
     private String name;
-    private LocalDateTime lastStatusChangeDate;
     private String statusDescription;
 
 }

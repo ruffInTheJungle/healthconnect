@@ -28,6 +28,16 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
+    public Status getConfirmedStatus() {
+         return this.statusRepository.findStatusByName("CONFIRMED");
+    }
+
+    @Override
+    public Status getArchivedStatus() {
+        return this.statusRepository.findStatusByName("Archived");
+    }
+
+    @Override
     public List<StatusServiceModel> getAllStatuses() {
         List <StatusServiceModel> statuses = new ArrayList<>();
         for (Status status : this.statusRepository.findAll()) {

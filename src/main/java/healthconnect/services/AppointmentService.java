@@ -14,4 +14,8 @@ public interface AppointmentService {
     List<AppointmentServiceModel> getAllConfirmedAppointmentsByDoctor(String username);
 
     List<AppointmentServiceModel> getAllArchivedAppointmentsByDoctor(String username);
+
+    void confirmAppointment(String id, String dateAndTime);
+
+    void archiveAppointment(Long id);
 }

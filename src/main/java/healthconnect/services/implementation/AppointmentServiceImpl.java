@@ -8,7 +8,10 @@ import healthconnect.services.StatusService;
 import healthconnect.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +80,33 @@ public class AppointmentServiceImpl implements AppointmentService {
             requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
         }
         return requestedAppointments;
+    }
+
+    @Override
+    @Transactional
+    public void confirmAppointment(String id, String dateAndTime) {
+        Long appointmentID = Long.parseLong(id);
+
+        String[] dateTokens = dateAndTime.split("T");
+        dateTokens[1] = dateTokens[1].substring(0, 5);
+        dateAndTime = dateTokens[0] + " " + dateTokens[1];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(dateAndTime, formatter);
+
+        Appointment appointment = this.appointmentRepository.getOne(appointmentID);
+        appointment.setStatus(this.statusService.getConfirmedStatus());
+        appointment.setAppointmentTime(dateTime);
+
+        this.appointmentRepository.save(appointment);
+
+    }
+
+    @Transactional
+    @Override
+    public void archiveAppointment(Long id) {
+        Appointment appointment = this.appointmentRepository.getOne(id);
+        appointment.setStatus(this.statusService.getArchivedStatus());
+        this.appointmentRepository.save(appointment);
     }
 
 }

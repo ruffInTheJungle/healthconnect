@@ -38,12 +38,12 @@ public class ApplicationInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (statusRepository.count() == 0) {
-            Status requested = new Status("REQUESTED", LocalDateTime.now(), "Your appointment has been " +
+            Status requested = new Status("REQUESTED", "Your appointment has been " +
                     "requested. Up to 24 hours after the request our team will contact you to arrange the details.");
-            Status confirmed = new Status("CONFIRMED", LocalDateTime.now(), "Your appointment has been" +
+            Status confirmed = new Status("CONFIRMED", "Your appointment has been" +
                     " confirmed. Our specialist will be waiting for you at the confirmed day and time." +
                     "You could always refer to your Appointments section for details.");
-            Status archived = new Status("ARCHIVED", LocalDateTime.now(), "Your appointment has been archived.");
+            Status archived = new Status("ARCHIVED", "Your appointment has been archived.");
             this.statusRepository.saveAll(List.of(requested, confirmed, archived));
 
             if (this.roleRepository.count() == 0) {
@@ -122,13 +122,11 @@ public class ApplicationInit implements CommandLineRunner {
                             LocalDateTime.now(), this.statusRepository.findStatusByName("ARCHIVED"));
 
                     this.appointmentRepository.saveAll(List.of(firstAppointment, secondAppointment, thirdAppointment));
+
+                    this.prescriptionRepository.save(
+                            new Prescription(doctor, patient, LocalDate.now(),
+                                    "MNOGO DOBRO LEKARSTWO TI DAWAM!!", thirdAppointment));
                 }
-
-                this.prescriptionRepository.save(
-                        new Prescription(doctor, patient, LocalDate.now(),
-                                "MNOGO DOBRO LEKARSTWO TI DAWAM!!"));
-
-
             }
         }
 
