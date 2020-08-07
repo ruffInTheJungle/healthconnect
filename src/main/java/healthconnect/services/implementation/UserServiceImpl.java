@@ -138,4 +138,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User user = this.userRepository.findOneById(patientId);
         return user.getSalutation() + " " + user.getFirstName() + " " + user.getLastName();
     }
+
+    @Override
+    public User getUserById(Long patientId) {
+        return this.userRepository.findOneById(patientId);
+    }
 }

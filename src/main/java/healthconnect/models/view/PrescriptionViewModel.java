@@ -16,7 +16,7 @@ public class PrescriptionViewModel {
 
     private Long id;
     private AppointmentUserViewModel prescribedBy;
-    private AppointmentViewModel prescribeTo;
+    private AppointmentUserViewModel prescribeTo;
     private String date;
     private String prescriptionNotes;
 

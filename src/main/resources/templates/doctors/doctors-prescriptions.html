@@ -8,7 +8,7 @@
 <body>
 
 <header id="header" class="fixed-top">
-    <th:block th:include="~{/fragments/doctors-nav}"> </th:block>
+    <th:block th:include="~{/fragments/doctors-nav}"></th:block>
 </header><!-- End Header -->
 
 <!-- ======= Featured Services Section ======= -->
@@ -20,35 +20,36 @@
         <div class="section-title">
             <div class="move-options"></div>
 
-            <h2>Your Requested Appointments</h2>
+            <h2>Your Prescriptions</h2>
         </div>
         <ul>
             <li>
-                <div class="row" th:each="i : ${appointments}" th:object="${i}">
+                <div class="row" th:each="i : ${prescriptions}" th:object="${i}">
                     <div class="col-md-4 col-lg-12 d-flex align-items-stretch mb-5 mb-lg-0">
                         <div class="icon-box col-lg-12" data-aos="fade-up" data-aos-delay="100">
-                            <div class="col-md-4 col-lg-12 d-flex align-items-stretch mb-5 mb-lg-0 col-form-label">
-                                <a class="col-lg-10" th:text="('Appointment id: ' +  *{getId()} + '   |   Scheduled for: ' + *{getAppointmentTime()} +' | Patient: ' + *{getPatient().getFirstName()} + ' ' + *{getPatient().getLastName()})">
-                                    Date: 21.07.2017 | Doctor: dr. Petter Griffin | Status: Requested
+                            <div class="col-md-4 col-lg-12 d-flex align-items-stretch mb-5 mb-lg-0">
+                                <a th:href="@{/doctor/prescription/(id = *{getId()})}" th:text="('Prescriptions id: ' +  *{getId()} + ' | Patient: ' + *{getPrescribeTo().getSalutation()}+   ' ' + *{getPrescribeTo().getFirstName()} + ' ' + *{getPrescribeTo().getLastName()})" style="color: black">Prescribed
+                                    by:
+                                    dr. Petter Griffin |
+                                    Date: 21.07.2017
                                 </a>
-
-                                <a class="w3-button w3-round w3-border w3-small" th:href="@{/doctor/confirmAppointment(id = *{getId()})}"><b>Confirm appointment</b></a>
 
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="move-options"></div>
-
+                <form method="GET" th:action="@{/home}">
+                    <button class="logout-button">Back To Homepage</button>
+                </form>
             </li>
         </ul>
-        <form method="GET" th:action="@{/doctor/appointments}">
-            <button class="logout-button">Back To Appointments</button>
-        </form>
+
 
     </div>
-    <div class="push-down-footer"></div>
 </section><!-- End Featured Services Section -->
+
 
 <footer id="footer">
     <th:block th:include="~{/fragments/footer}"></th:block>

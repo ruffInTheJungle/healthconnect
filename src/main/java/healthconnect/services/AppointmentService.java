@@ -1,5 +1,6 @@
 package healthconnect.services;
 
+import healthconnect.models.entity.Appointment;
 import healthconnect.models.service.AppointmentServiceModel;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface AppointmentService {
     void confirmAppointment(String id, String dateAndTime);
 
     void archiveAppointment(Long id);
+
+    Appointment getAppointmentById(Long id);
 }

@@ -109,4 +109,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.appointmentRepository.save(appointment);
     }
 
+    @Override
+    public Appointment getAppointmentById(Long id) {
+        return this.appointmentRepository.findOneById(id);
+    }
+
 }

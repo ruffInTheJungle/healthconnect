@@ -1,6 +1,7 @@
 package healthconnect.web.controllers;
 
 import healthconnect.models.binding.PrescriptionBindingModel;
+import healthconnect.models.binding.PrescriptionEditBindingModel;
 import healthconnect.models.service.PrescriptionServiceModel;
 import healthconnect.models.view.PrescriptionViewModel;
 import healthconnect.services.AppointmentService;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class PrescriptionController {
     }
 
     @GetMapping("/prescriptions")
-    public String getAllAppointmentsForPatient(Model model) {
+    public String getAllPrescriptionsPerPatient(Model model) {
         String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
 
         List<PrescriptionViewModel> prescriptions = new ArrayList<>();
@@ -46,7 +48,7 @@ public class PrescriptionController {
     }
 
     @RequestMapping(value = "/prescriptions/prescription")
-    public String getDepartmentDoctors(@RequestParam("id") Long id, Model model) {
+    public String getPatientPrescription(@RequestParam("id") Long id, Model model) {
 
 
         PrescriptionViewModel prescription = this.modelMapper
@@ -76,7 +78,68 @@ public class PrescriptionController {
         prescriptionBindingModel.setDoctorUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         this.prescriptionService.issuePrescription(prescriptionBindingModel);
 
-        return "redirect:/doctor/appointments/archived";
+        return "redirect:/doctor/appointments/confirmed";
     }
+
+    @GetMapping("/doctor/prescriptions")
+    public String getAllPrescriptionsPerDoctor(Model model) {
+        String doctorName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<PrescriptionViewModel> prescriptions = new ArrayList<>();
+
+        for (PrescriptionServiceModel prescriptionServiceModel : this.prescriptionService.getPrescriptionsForDoctor(doctorName)) {
+            prescriptions.add(this.modelMapper.map(prescriptionServiceModel, PrescriptionViewModel.class));
+        }
+
+        model.addAttribute("prescriptions", prescriptions);
+
+        return "doctors/doctors-prescriptions";
+    }
+
+
+    @RequestMapping(value = "/doctor/prescription")
+    public String getDoctorPrescription(@RequestParam("id") Long id, Model model) {
+
+
+        PrescriptionViewModel prescription = this.modelMapper
+                .map(this.prescriptionService.getPrescriptionWithId(id), PrescriptionViewModel.class);
+
+        model.addAttribute("prescription", prescription);
+
+        return "doctors/doctors-prescription";
+    }
+
+
+    @GetMapping("/doctor/editPrescription")
+    public String getEditPrescription (@RequestParam("id") Long id, Model model){
+        PrescriptionViewModel prescription = this.modelMapper
+                .map(this.prescriptionService.getPrescriptionWithId(id), PrescriptionViewModel.class);
+
+        String patient =  prescription.getPrescribeTo().getSalutation() + " " + prescription.getPrescribeTo().getFirstName()
+        + " " + prescription.getPrescribeTo().getLastName();
+
+        model.addAttribute("id", id);
+        model.addAttribute("patient", patient);
+        model.addAttribute("prescription", prescription);
+
+        return "doctors/edit-prescription";
+
+    }
+
+    @PostMapping("/doctor/editPrescription")
+    public String postEditPrescription(@ModelAttribute("prescriptionEditBindingModel")
+                                                   PrescriptionEditBindingModel prescriptionEditBindingModel,
+                                       RedirectAttributes redirectAttributes) {
+
+
+
+        this.prescriptionService.editPrescription(prescriptionEditBindingModel);
+
+        redirectAttributes.addAttribute("id", prescriptionEditBindingModel.getPrescriptionId());
+
+
+        return "redirect:/doctor/prescription";
+    }
+
 
 }

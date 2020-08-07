@@ -19,4 +19,6 @@ public interface UserService {
     String getDoctorAppointmentsGreeting (String username);
 
     String getUserFullName(Long patientId);
+
+    User getUserById(Long patientId);
 }
