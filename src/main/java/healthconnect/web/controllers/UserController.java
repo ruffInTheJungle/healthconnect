@@ -82,7 +82,7 @@ public class UserController {
 
                 return "redirect:register";
             } else {
-                if (this.userService.checkIfUsernameExists(userRegistrationBindingModel.getUsername())){
+                if (this.userService.checkIfUsernameExists(userRegistrationBindingModel.getUsername())) {
                     redirectAttributes.addFlashAttribute("usernameIsTake", "taken username");
                     redirectAttributes.addFlashAttribute("userRegistrationBindingModel", userRegistrationBindingModel);
 
@@ -95,4 +95,10 @@ public class UserController {
         return "redirect:login";
 
     }
+
+    @GetMapping("admin/admin-panel")
+    public String getAdminPanel() {
+        return "admin/admin-panel";
+    }
+
 }

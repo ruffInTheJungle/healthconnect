@@ -37,13 +37,24 @@ public class HomeController {
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>)
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+
         modelAndView.setViewName("home");
 
+        boolean doctor = false;
+        boolean admin = false;
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_DOCTOR")){
-                modelAndView.setViewName("doctors/doctors-home");
-                break;
+               doctor = true;
             }
+            if (authority.getAuthority().equals("ROLE_ADMIN")){
+                admin = true;
+            }
+        }
+
+        if (doctor && !admin) {
+            modelAndView.setViewName("doctors/doctors-home");
+        } else if (doctor && admin) {
+            modelAndView.setViewName("admin/admin-home");
         }
 
         return modelAndView;
@@ -52,6 +63,16 @@ public class HomeController {
     @PostMapping("/home")
     public String homePost() {
         return "redirect:/home";
+    }
+
+    @GetMapping("/admin/user")
+    public String logAdminAsUser() {
+        return "home";
+    }
+
+    @GetMapping("/admin/doctor")
+    public String logAdminAsDoctor() {
+        return "doctors/doctors-home";
     }
 
     @GetMapping("/about-us")

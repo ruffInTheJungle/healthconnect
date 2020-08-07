@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -62,18 +63,21 @@ public class AppointmentController {
         }
 
         model.addAttribute("doctors", doctors);
-
         return "make-appointment";
     }
 
     @PostMapping("/appointments/make-appointment")
     public String makeAppointmentPost(@ModelAttribute("doctor")
-                                              String doctor) {
+                                              String doctor,
+                                      RedirectAttributes redirectAttributes) {
+
+        if (doctor.equals("Select Doctor")) {
+            redirectAttributes.addFlashAttribute("doctorNotSelected", "missing doctor");
+            return "redirect:/appointments/make-appointment";
+        }
 
         String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
-
         this.appointmentService.createAppointmentRequest(doctor, patientName);
-
         return "redirect:/appointments";
     }
 
