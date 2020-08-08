@@ -1,10 +1,12 @@
 package healthconnect.services.implementation;
 
+import healthconnect.models.binding.RoleBindingModel;
 import healthconnect.models.entity.Role;
 import healthconnect.models.entity.User;
 import healthconnect.models.service.RoleServiceModel;
 import healthconnect.models.service.UserServiceModel;
 import healthconnect.repositories.UserRepository;
+import healthconnect.services.RoleService;
 import healthconnect.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,11 +28,13 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -142,5 +147,59 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User getUserById(Long patientId) {
         return this.userRepository.findOneById(patientId);
+    }
+
+    @Override
+    public List<String> getAllUsernames() {
+        List<String> usernames = new ArrayList<>();
+        for (User user : this.userRepository.findAll()) {
+            usernames.add(user.getUsername());
+        }
+
+        return usernames;
+    }
+
+    @Override
+    public List<String> getUserRoles(String username) {
+        UserServiceModel user = this.modelMapper.map(this.userRepository.findOneByUsername(username), UserServiceModel.class);
+        List<String> roles = new ArrayList<>();
+
+        for (RoleServiceModel role : user.getRoles()) {
+            roles.add(role.getName());
+        }
+
+        return roles;
+    }
+
+    @Transactional
+    @Override
+    public void setUserWithNewRoles(RoleBindingModel roleBindingModel) {
+        User user = this.userRepository.findOneByUsername(roleBindingModel.getUsername());
+        user.setRoles(new ArrayList<>());
+
+        this.userRepository.save(user);
+        List<Role> roles = new ArrayList<>();
+
+        if (roleBindingModel.isAdmin()) {
+            Role role = this.roleService.getNewRole();
+            role.setName("ROLE_ADMIN");
+            role.setUser(user);
+            roles.add(role);
+        }
+        if (roleBindingModel.isPatient()) {
+            Role role = this.roleService.getNewRole();
+            role.setName("ROLE_PATIENT");
+            role.setUser(user);
+            roles.add(role);
+        }
+        if (roleBindingModel.isDoctor()) {
+            Role role = this.roleService.getNewRole();
+            role.setName("ROLE_DOCTOR");
+            role.setUser(user);
+            roles.add(role);
+        }
+
+        user.setRoles(roles);
+        this.userRepository.save(user);
     }
 }

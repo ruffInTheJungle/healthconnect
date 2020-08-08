@@ -1,5 +1,6 @@
 package healthconnect.services;
 
+import healthconnect.models.binding.RoleBindingModel;
 import healthconnect.models.entity.User;
 import healthconnect.models.service.UserServiceModel;
 
@@ -21,4 +22,10 @@ public interface UserService {
     String getUserFullName(Long patientId);
 
     User getUserById(Long patientId);
+
+    List<String> getAllUsernames();
+
+    List<String> getUserRoles(String username);
+
+    void setUserWithNewRoles(RoleBindingModel roleBindingModel);
 }

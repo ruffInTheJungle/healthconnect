@@ -53,7 +53,11 @@ public class HomeController {
 
         if (doctor && !admin) {
             modelAndView.setViewName("doctors/doctors-home");
-        } else if (doctor && admin) {
+        }
+        if (doctor && admin) {
+            modelAndView.setViewName("admin/admin-home");
+        }
+        if (!doctor && admin){
             modelAndView.setViewName("admin/admin-home");
         }
 
