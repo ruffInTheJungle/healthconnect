@@ -3,7 +3,19 @@ services:
   db:
     image: mysql:8
     ports:
-    - "3306:3306"
+      - "3306:3306"
     environment:
-     - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
-     - MYSQL_DATABASE=healthconnect_db
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+      - MYSQL_DATABASE=healthconnect_db
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+        - DATABASE_HOST=db
+        - DATABASE_USER=root
+        - DATABASE_PASSWORD=
+        - DATABASE_NAME=healthconnect_db
+        - DATABASE_PORT=3306do
+    ports:
+      - "8080:8080"

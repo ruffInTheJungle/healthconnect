@@ -95,6 +95,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>healthconnect-docker</finalName>
     </build>
 
 </project>
