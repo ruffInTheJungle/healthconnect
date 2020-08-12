@@ -16,6 +16,6 @@ services:
         - DATABASE_USER=root
         - DATABASE_PASSWORD=
         - DATABASE_NAME=healthconnect_db
-        - DATABASE_PORT=3306do
+        - DATABASE_PORT=3306
     ports:
       - "8080:8080"

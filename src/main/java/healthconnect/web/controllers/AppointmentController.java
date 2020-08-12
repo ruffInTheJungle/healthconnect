@@ -161,8 +161,14 @@ public class AppointmentController {
 
     @PostMapping("/doctor/confirmAppointment")
     public String postConfirmAppointment(@ModelAttribute("appointmentConfirmationBindingModel")
-                                                 AppointmentConfirmationBindingModel appointmentConfirmationBindingModel) {
+                                                 AppointmentConfirmationBindingModel appointmentConfirmationBindingModel,
+                                         RedirectAttributes redirectAttributes) {
 
+        if (appointmentConfirmationBindingModel.getDateAndTime().isEmpty()){
+            redirectAttributes.addFlashAttribute("missingDateTime", "date not selected");
+            redirectAttributes.addAttribute("id", appointmentConfirmationBindingModel.getId());
+            return "redirect:/doctor/confirmAppointment";
+        }
         this.appointmentService
                 .confirmAppointment(appointmentConfirmationBindingModel.getId(), appointmentConfirmationBindingModel.getDateAndTime());
 
@@ -176,7 +182,7 @@ public class AppointmentController {
         this.appointmentService
                 .archiveAppointment(id);
 
-        return "redirect:/doctor/appointments/requested";
+        return "redirect:/doctor/appointments/archived";
     }
 
 
