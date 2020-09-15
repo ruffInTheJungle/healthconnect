@@ -196,6 +196,7 @@ public class AppointmentController {
         String[] tokens = date.split("T");
         tokens[1] = tokens[1].substring(0, 5);
         date = tokens[0] + " Time: " + tokens[1];
+
         return date;
     }
 }
