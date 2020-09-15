@@ -3,7 +3,7 @@ package healthconnect.web.controllers;
 import healthconnect.models.binding.RoleBindingModel;
 import healthconnect.services.RoleService;
 import healthconnect.services.UserService;
-import healthconnect.utils.roleValidator.SessionUtils;
+import healthconnect.utils.SessionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +40,7 @@ public class RoleController {
 
     @PostMapping("admin/manage-roles-select-user")
     public String manageRoles(@ModelAttribute("username") String username,
-                              Model model, RedirectAttributes redirectAttributes) {
+                              RedirectAttributes redirectAttributes) {
 
         if (username.equals("Select User")) {
             redirectAttributes.addFlashAttribute("userNotSelected", "missing user");
@@ -87,14 +87,15 @@ public class RoleController {
                 redirectAttributes.addFlashAttribute("roleIssue",
                         "Can not be user and doctor at the same time without having admin rights!");
                 redirectAttributes.addAttribute("username", roleBindingModel.getUsername());
+
                 return "redirect:role-manager";
             }
         }
 
         this.roleService.deleteCurrentRolesForUser(roleBindingModel.getUsername());
         this.userService.setUserWithNewRoles(roleBindingModel);
-
         this.sessionUtils.expireUserSessions(roleBindingModel.getUsername());
+
         return "redirect:manage-roles-select-user";
     }
 }

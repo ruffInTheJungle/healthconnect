@@ -11,7 +11,9 @@ public class RoleValidator implements ConstraintValidator<ValidateRole, String> 
 
     @Override
     public void initialize(ValidateRole constraintAnnotation) {
-        valueList = new ArrayList<String>();
+
+        this.valueList = new ArrayList<String>();
+
         for(String val : constraintAnnotation.acceptedValues()) {
             valueList.add(val.toUpperCase());
         }
@@ -19,6 +21,7 @@ public class RoleValidator implements ConstraintValidator<ValidateRole, String> 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+
         return valueList.contains(value.toUpperCase());
     }
 

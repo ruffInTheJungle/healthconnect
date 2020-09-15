@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class DepartmentServiceModel extends BaseServiceModel {
 
     private String name;

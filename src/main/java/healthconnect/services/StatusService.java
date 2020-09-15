@@ -14,4 +14,5 @@ public interface StatusService {
     List<StatusServiceModel> getAllStatuses();
 
     Status getArchivedStatus();
+
 }

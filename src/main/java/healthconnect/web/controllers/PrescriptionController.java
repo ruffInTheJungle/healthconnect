@@ -34,8 +34,8 @@ public class PrescriptionController {
 
     @GetMapping("/prescriptions")
     public String getAllPrescriptionsPerPatient(Model model) {
-        String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
         List<PrescriptionViewModel> prescriptions = new ArrayList<>();
 
         for (PrescriptionServiceModel prescriptionServiceModel : this.prescriptionService.getPrescriptionsForUser(patientName)) {
@@ -49,7 +49,6 @@ public class PrescriptionController {
 
     @RequestMapping(value = "/prescriptions/prescription")
     public String getPatientPrescription(@RequestParam("id") Long id, Model model) {
-
 
         PrescriptionViewModel prescription = this.modelMapper
                 .map(this.prescriptionService.getPrescriptionWithId(id), PrescriptionViewModel.class);
@@ -83,8 +82,8 @@ public class PrescriptionController {
 
     @GetMapping("/doctor/prescriptions")
     public String getAllPrescriptionsPerDoctor(Model model) {
-        String doctorName = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        String doctorName = SecurityContextHolder.getContext().getAuthentication().getName();
         List<PrescriptionViewModel> prescriptions = new ArrayList<>();
 
         for (PrescriptionServiceModel prescriptionServiceModel : this.prescriptionService.getPrescriptionsForDoctor(doctorName)) {
@@ -112,6 +111,7 @@ public class PrescriptionController {
 
     @GetMapping("/doctor/editPrescription")
     public String getEditPrescription (@RequestParam("id") Long id, Model model){
+
         PrescriptionViewModel prescription = this.modelMapper
                 .map(this.prescriptionService.getPrescriptionWithId(id), PrescriptionViewModel.class);
 
@@ -131,12 +131,9 @@ public class PrescriptionController {
                                                    PrescriptionEditBindingModel prescriptionEditBindingModel,
                                        RedirectAttributes redirectAttributes) {
 
-
-
         this.prescriptionService.editPrescription(prescriptionEditBindingModel);
 
         redirectAttributes.addAttribute("id", prescriptionEditBindingModel.getPrescriptionId());
-
 
         return "redirect:/doctor/prescription";
     }

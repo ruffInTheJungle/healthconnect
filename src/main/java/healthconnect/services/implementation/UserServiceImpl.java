@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 
     private UserDetails map(User userEntity) {
+
         return new org.springframework.security.core.userdetails.User(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
@@ -59,7 +60,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Optional<User> userEntityOpt = userRepository.findByUsername(username);
+
         return userEntityOpt.
                 map(this::map).
                 orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found!"));
@@ -67,16 +70,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public String getGreeting(String username) {
+
         User user = this.userRepository.findByUsername(username).orElse(null);
         String greeting = "";
+
         if (user != null) {
             greeting = "Welcome " + user.getSalutation() + " " + user.getLastName();
         }
+
         return greeting;
     }
 
     @Override
     public void registerPatient(UserServiceModel userServiceModel) {
+
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(this.passwordEncoder.encode(userServiceModel.getPassword()));
         Role rolePatient = new Role();
@@ -91,11 +98,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public boolean checkIfUsernameExists(String username) {
+
         return this.userRepository.findByUsername(username).orElse(null) != null;
+
     }
 
     @Override
     public List<UserServiceModel> getAllDoctors() {
+
         List<UserServiceModel> users = new ArrayList<>();
 
         for (User user : this.userRepository.findAll()) {
@@ -124,33 +134,40 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User getUserByUsername(String username) {
+
         return this.userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
     public String getDoctorAppointmentsGreeting(String username) {
-        User user = this.userRepository.findByUsername(username).orElse(null);
 
+        User user = this.userRepository.findByUsername(username).orElse(null);
         String greeting = "";
+
         if (user != null) {
             greeting = user.getSalutation() + " " + user.getLastName() + "`s Appointments";
         }
+
         return greeting;
     }
 
     @Override
     public String getUserFullName(Long patientId) {
+
         User user = this.userRepository.findOneById(patientId);
+
         return user.getSalutation() + " " + user.getFirstName() + " " + user.getLastName();
     }
 
     @Override
     public User getUserById(Long patientId) {
+
         return this.userRepository.findOneById(patientId);
     }
 
     @Override
     public List<String> getAllUsernames() {
+
         List<String> usernames = new ArrayList<>();
         for (User user : this.userRepository.findAll()) {
             usernames.add(user.getUsername());
@@ -161,6 +178,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public List<String> getUserRoles(String username) {
+
         UserServiceModel user = this.modelMapper.map(this.userRepository.findOneByUsername(username), UserServiceModel.class);
         List<String> roles = new ArrayList<>();
 
@@ -174,6 +192,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional
     @Override
     public void setUserWithNewRoles(RoleBindingModel roleBindingModel) {
+
         User user = this.userRepository.findOneByUsername(roleBindingModel.getUsername());
         user.setRoles(new ArrayList<>());
 

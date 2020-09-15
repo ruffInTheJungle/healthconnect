@@ -38,6 +38,7 @@ public class UserController {
     @PostMapping("/login-error")
     public ModelAndView onLoginError(
             @ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String user) {
+
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("loginError", "bad_credentials");
@@ -50,9 +51,11 @@ public class UserController {
 
     @GetMapping("/register")
     public String showRegister(Model model) {
+
         if (!model.containsAttribute("userRegistrationBindingModel")) {
             model.addAttribute("userRegistrationBindingModel", new UserRegistrationBindingModel());
         }
+
         return "register";
     }
 

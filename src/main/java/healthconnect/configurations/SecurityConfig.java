@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
         http.sessionManagement()
                 .maximumSessions(100)               //(1)
                 .maxSessionsPreventsLogin(false)    //(2)
@@ -46,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionRegistry(this.sessionRegistry);
 
         http.authorizeRequests()
-                .antMatchers("/users/login","/", "/users/login-error", "/resources/**", "/index").permitAll()
+                .antMatchers("/users/login", "/", "/users/login-error", "/resources/**", "/index").permitAll()
                 .antMatchers("/home").hasAnyRole("ADMIN", "DOCTOR", "PATIENT")
                 .antMatchers("/doctors/**").hasAnyRole("PATIENT", "ADMIN")
                 .antMatchers("/departments/**").hasAnyRole("PATIENT", "ADMIN")
@@ -57,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/doctors/**").hasAnyRole("PATIENT", "ADMIN")
                 .antMatchers("/about-us").hasAnyRole("PATIENT", "ADMIN")
                 .antMatchers("/doctor/**").hasAnyRole("DOCTOR", "ADMIN")
-                .antMatchers("/admin/**").hasAnyRole( "ADMIN")
+                .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/users/login")
@@ -70,10 +69,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
 
-
-
-        ////h2 magic, TODO: delete me
-        //http.csrf().disable();
-        //http.headers().frameOptions().disable();
     }
 }

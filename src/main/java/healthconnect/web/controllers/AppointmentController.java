@@ -37,8 +37,8 @@ public class AppointmentController {
 
     @GetMapping("/appointments")
     public String getAllAppointmentsForPatient(Model model) {
-        String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
         List<AppointmentViewModel> appointments = new ArrayList<>();
 
         for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAppointmentsForUserWithUsername(patientName)) {
@@ -47,8 +47,8 @@ public class AppointmentController {
             appointmentViewModel.setAppointmentTime(date);
             appointments.add(appointmentViewModel);
         }
-        model.addAttribute("appointments", appointments);
 
+        model.addAttribute("appointments", appointments);
 
         return "appointments";
     }
@@ -63,6 +63,7 @@ public class AppointmentController {
         }
 
         model.addAttribute("doctors", doctors);
+
         return "make-appointment";
     }
 
@@ -78,17 +79,19 @@ public class AppointmentController {
 
         String patientName = SecurityContextHolder.getContext().getAuthentication().getName();
         this.appointmentService.createAppointmentRequest(doctor, patientName);
+
         return "redirect:/appointments";
     }
 
 
     @GetMapping("/doctor/appointments")
     public String getDoctorAppointments(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String greeting = this.userService.getDoctorAppointmentsGreeting(username);
 
         model.addAttribute("greeting", greeting);
+
         return "doctors/doctors-appointments";
     }
 
@@ -115,7 +118,6 @@ public class AppointmentController {
     public String getDoctorConfirmedAppointments(Model model) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         List<AppointmentViewModel> appointments = new ArrayList<>();
 
         for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAllConfirmedAppointmentsByDoctor(username)) {
@@ -134,7 +136,6 @@ public class AppointmentController {
     public String getDoctorArchivedAppointments(Model model) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         List<AppointmentViewModel> appointments = new ArrayList<>();
 
         for (AppointmentServiceModel appointmentServiceModel : this.appointmentService.getAllArchivedAppointmentsByDoctor(username)) {
@@ -153,7 +154,6 @@ public class AppointmentController {
     @RequestMapping("/doctor/confirmAppointment")
     public String getConfirmAppointment(@RequestParam("id") Long id, Model model) {
 
-
         model.addAttribute("id", id);
 
         return "doctors/confirm-appointment";
@@ -164,11 +164,12 @@ public class AppointmentController {
                                                  AppointmentConfirmationBindingModel appointmentConfirmationBindingModel,
                                          RedirectAttributes redirectAttributes) {
 
-        if (appointmentConfirmationBindingModel.getDateAndTime().isEmpty()){
+        if (appointmentConfirmationBindingModel.getDateAndTime().isEmpty()) {
             redirectAttributes.addFlashAttribute("missingDateTime", "date not selected");
             redirectAttributes.addAttribute("id", appointmentConfirmationBindingModel.getId());
             return "redirect:/doctor/confirmAppointment";
         }
+
         this.appointmentService
                 .confirmAppointment(appointmentConfirmationBindingModel.getId(), appointmentConfirmationBindingModel.getDateAndTime());
 
@@ -179,17 +180,18 @@ public class AppointmentController {
     public String postArchiveAppointment(@RequestParam("id")
                                                  Long id) {
 
-        this.appointmentService
-                .archiveAppointment(id);
+        this.appointmentService.archiveAppointment(id);
 
         return "redirect:/doctor/appointments/archived";
     }
 
 
     private String getString(AppointmentViewModel appointmentViewModel) {
+
         if (appointmentViewModel.getAppointmentTime() == null) {
             return "TO BE CONFIRMED";
         }
+
         String date = appointmentViewModel.getAppointmentTime();
         String[] tokens = date.split("T");
         tokens[1] = tokens[1].substring(0, 5);

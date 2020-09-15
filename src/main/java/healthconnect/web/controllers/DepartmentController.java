@@ -24,15 +24,14 @@ public class DepartmentController {
 
         model.addAttribute("departments", this.departmentService.getAllDepartments());
 
-
         return "departments";
     }
 
     @GetMapping("/department")
     public String getDepartment (@RequestParam("name") String name, Model model) {
-        DepartmentViewModel department =
-                this.modelMapper.map
-                        (this.departmentService.getDepartmentByName(name),
+
+        DepartmentViewModel department = this.modelMapper
+                .map(this.departmentService.getDepartmentByName(name),
                                 DepartmentViewModel.class);
 
         model.addAttribute("department", department);
@@ -42,7 +41,6 @@ public class DepartmentController {
 
     @GetMapping("/department/team")
     public String getDepartmentDoctors (@RequestParam("name") String name, Model model) {
-
 
         DepartmentViewModel  department =
                 this.modelMapper.map(this.departmentService.getDepartmentByName(name), DepartmentViewModel.class);

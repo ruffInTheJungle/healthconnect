@@ -7,6 +7,7 @@ import healthconnect.models.service.UserServiceModel;
 import java.util.List;
 
 public interface UserService {
+
     String getGreeting (String username);
 
     void registerPatient(UserServiceModel userServiceModel);
@@ -28,4 +29,5 @@ public interface UserService {
     List<String> getUserRoles(String username);
 
     void setUserWithNewRoles(RoleBindingModel roleBindingModel);
+
 }

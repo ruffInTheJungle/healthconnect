@@ -24,8 +24,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentViewModel> getAllDepartments() {
-       List<Department> departments = this.departmentRepository.findAll();
-       List<DepartmentViewModel> viewDepartments = new ArrayList<>();
+
+        List<Department> departments = this.departmentRepository.findAll();
+        List<DepartmentViewModel> viewDepartments = new ArrayList<>();
+
         for (Department department : departments) {
             viewDepartments.add(this.modelMapper.
                     map(department, DepartmentViewModel.class));
@@ -40,6 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return this.modelMapper.map
                 (this.departmentRepository.findDepartmentByName(name),
                         DepartmentServiceModel.class);
+
     }
 }
 

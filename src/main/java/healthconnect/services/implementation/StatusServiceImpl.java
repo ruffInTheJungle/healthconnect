@@ -34,12 +34,14 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public Status getArchivedStatus() {
-        return this.statusRepository.findStatusByName("Archived");
+        return this.statusRepository.findStatusByName("ARCHIVED");
     }
 
     @Override
     public List<StatusServiceModel> getAllStatuses() {
+
         List <StatusServiceModel> statuses = new ArrayList<>();
+
         for (Status status : this.statusRepository.findAll()) {
             statuses.add(this.modelMapper.map(status, StatusServiceModel.class));
         }

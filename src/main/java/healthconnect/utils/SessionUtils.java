@@ -1,4 +1,4 @@
-package healthconnect.utils.roleValidator;
+package healthconnect.utils;
 
 import healthconnect.models.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,8 @@ public class SessionUtils {
 
                 UserDetails userDetails = (UserDetails) principal;
                 if (userDetails.getUsername().equals(username)) {
-                    int a  = 5;
                     for (SessionInformation information : sessionRegistry.getAllSessions(userDetails, true)) {
                         information.expireNow();
-                        int b = 6;
                     }
                 }
 

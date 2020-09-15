@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class DepartmentViewModel {
 
     private String name;

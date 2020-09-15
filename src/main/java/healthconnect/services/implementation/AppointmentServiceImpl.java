@@ -35,9 +35,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<AppointmentServiceModel> appointments = new ArrayList<>();
 
-
         for (Appointment appointment : this.appointmentRepository.findAllByPatientUsername(patientName)) {
-
             appointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
         }
 
@@ -57,34 +55,44 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentServiceModel> getAllRequestedAppointmentsByDoctor(String username) {
+
         List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+
         for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "REQUESTED")) {
             requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
         }
+
         return requestedAppointments;
     }
 
     @Override
     public List<AppointmentServiceModel> getAllConfirmedAppointmentsByDoctor(String username) {
+
         List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+
         for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "CONFIRMED")) {
             requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
         }
+
         return requestedAppointments;
     }
 
     @Override
     public List<AppointmentServiceModel> getAllArchivedAppointmentsByDoctor(String username) {
+
         List<AppointmentServiceModel> requestedAppointments = new ArrayList<>();
+
         for (Appointment appointment : this.appointmentRepository.findAllByDoctorUsernameAndStatusName(username, "ARCHIVED")) {
             requestedAppointments.add(this.modelMapper.map(appointment, AppointmentServiceModel.class));
         }
+
         return requestedAppointments;
     }
 
     @Override
     @Transactional
     public void confirmAppointment(String id, String dateAndTime) {
+
         Long appointmentID = Long.parseLong(id);
 
         String[] dateTokens = dateAndTime.split("T");
@@ -104,14 +112,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     @Override
     public void archiveAppointment(Long id) {
+
         Appointment appointment = this.appointmentRepository.getOne(id);
         appointment.setStatus(this.statusService.getArchivedStatus());
         this.appointmentRepository.save(appointment);
+
     }
 
     @Override
     public Appointment getAppointmentById(Long id) {
+
         return this.appointmentRepository.findOneById(id);
+
     }
 
 }

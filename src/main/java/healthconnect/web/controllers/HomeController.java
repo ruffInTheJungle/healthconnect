@@ -30,18 +30,19 @@ public class HomeController {
 
     @GetMapping("/home")
     public ModelAndView home(Principal principal) {
+
         ModelAndView modelAndView = new ModelAndView();
         String greeting = this.userService.getGreeting(principal.getName());
         modelAndView.addObject("greeting", greeting);
+        modelAndView.setViewName("home");
 
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>)
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
-        modelAndView.setViewName("home");
-
         boolean doctor = false;
         boolean admin = false;
+
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_DOCTOR")){
                doctor = true;

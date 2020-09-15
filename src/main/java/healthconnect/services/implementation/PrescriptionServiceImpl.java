@@ -32,7 +32,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<PrescriptionServiceModel> getPrescriptionsForUser(String patientName) {
+
         List<PrescriptionServiceModel> prescriptions = new ArrayList<>();
+
         for (Prescription prescription : this.prescriptionRepository.findAllByPrescribeToUsername(patientName)) {
             prescriptions.add(this.modelMapper.map(prescription, PrescriptionServiceModel.class));
         }
@@ -48,6 +50,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public void issuePrescription(PrescriptionBindingModel prescriptionBindingModel) {
+
             Prescription prescription = new Prescription();
 
             prescription.setPrescribeTo(this.userService.getUserById(prescriptionBindingModel.getPatientId()));
@@ -56,14 +59,14 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             prescription.setPrescriptionNotes(prescriptionBindingModel.getNotes());
             prescription.setAppointment(this.appointmentService.getAppointmentById(prescriptionBindingModel.getAppointmentId()));
 
-            int a = 5;
-
             this.prescriptionRepository.save(prescription);
     }
 
     @Override
     public List<PrescriptionServiceModel> getPrescriptionsForDoctor(String doctorName) {
+
         List<PrescriptionServiceModel> prescriptions = new ArrayList<>();
+
         for (Prescription prescription : this.prescriptionRepository.findAllByPrescribedByUsername(doctorName)) {
             prescriptions.add(this.modelMapper.map(prescription, PrescriptionServiceModel.class));
         }

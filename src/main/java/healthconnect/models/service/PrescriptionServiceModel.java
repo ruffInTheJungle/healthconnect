@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class PrescriptionServiceModel extends BaseServiceModel{
 
     private UserServiceModel prescribedBy;

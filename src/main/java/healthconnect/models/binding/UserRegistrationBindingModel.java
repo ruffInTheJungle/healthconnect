@@ -22,7 +22,6 @@ import static healthconnect.messages.ValidationErrorMessages.*;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class UserRegistrationBindingModel {
 
 

@@ -9,7 +9,9 @@ import java.util.Optional;
 public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
 
     List<Prescription> findAllByPrescribeToUsername(String username);
+
     List<Prescription> findAllByPrescribedByUsername(String username);
+
     Prescription findOneById(Long id);
 
 }

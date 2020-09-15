@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class AppointmentServiceModel extends BaseServiceModel {
 
     private AppointmentUserViewModel doctor;

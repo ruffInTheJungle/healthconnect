@@ -6,6 +6,7 @@ import healthconnect.models.service.AppointmentServiceModel;
 import java.util.List;
 
 public interface AppointmentService {
+
     List<AppointmentServiceModel> getAppointmentsForUserWithUsername(String patientName);
 
     void createAppointmentRequest(String doctorUsername, String patientName);
@@ -21,4 +22,5 @@ public interface AppointmentService {
     void archiveAppointment(Long id);
 
     Appointment getAppointmentById(Long id);
+
 }

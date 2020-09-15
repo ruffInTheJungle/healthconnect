@@ -22,9 +22,6 @@ import static healthconnect.messages.ValidationErrorMessages.*;
 @Setter
 public class Department extends BaseEntity{
 
-    //TODO HANDLE IMAGE URL VALIDATION
-
-
     @NotNull
     @Size(max = 45)
     private String name;

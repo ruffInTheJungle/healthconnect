@@ -20,17 +20,18 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public void deleteCurrentRolesForUser(String username) {
-               List<Role> rolesOfUser = this.roleRepository.findAllByUserUsername(username);
+
+        List<Role> rolesOfUser = this.roleRepository.findAllByUserUsername(username);
 
         for (Role role : rolesOfUser) {
             this.roleRepository.deleteOneById(role.getId());
-
         }
 
     }
 
     @Override
     public Role getNewRole() {
+
         return new Role();
     }
 }

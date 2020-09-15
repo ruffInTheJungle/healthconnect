@@ -46,6 +46,7 @@ public class User extends BaseEntity{
     @NotNull
     @PastOrPresent
     private LocalDateTime registrationDate;
+    // to be implemented
     private Double rating;
     private boolean enabled;
 
