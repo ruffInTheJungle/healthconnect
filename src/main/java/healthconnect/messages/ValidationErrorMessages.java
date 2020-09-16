@@ -15,5 +15,14 @@ public class ValidationErrorMessages {
     public static final String INVALID_ARTICLE_TEXT_LENGTH = "Article Content must be at least 400 characters.";
     public static final String INVALID_STATUS = "Invalid appointment status. Please note the available statuses are \"REQUESTED\", \"CONFIRMED\", \"ARCHIVED\"";
     public static final String INCORRECT_PRESCRIPTION_DATE = "Prescription date cannot be in the past";
+    public static final String APPOINTMENT_DATE_MANDATORY = "Please note that setting appointment date is mandatory upon confirmation";
+    public static final String INVALID_APPOINTMENT_ID = "Please note that appointment id is mandatory upon issuing a prescription.";
+    public static final String INVALID_PATIENT_ID = "Please note that patient id is mandatory upon issuing a prescription.";
+    public static final String NOTES_CANNOT_BE_NULL = "Please note that notes are mandatory upon issuing a prescription.";
+    public static final String INVALID_NOTES_SIZE = "Please note that notes should contain between 10 and 2000 characters.";
+    public static final String DOCTOR_USERNAME_MISSING = "Please note that doctor username is mandatory upon issuing a prescription.";
+    public static final String PRESCRIPTION_ID_MANDATORY = "Please note that prescription id is mandatory upon editing a prescription.";
+    public static final String MISSING_USERNAME = "Please note that username is mandatory when editing user`s roles.";
+    public static final String MISSING_BIRTHDAY = "Please note that birth date is mandatory field.";
 
 }

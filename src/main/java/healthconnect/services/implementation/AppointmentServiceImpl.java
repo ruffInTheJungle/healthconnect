@@ -126,4 +126,23 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
+    @Override
+    public void initAppointments() {
+        if (this.appointmentRepository.count() == 0) {
+            Appointment firstAppointment =
+                    new Appointment(this.userService.getUserByUsername("doctor@abv.bg"),
+                            this.userService.getUserByUsername("patient@abv.bg"),
+                    LocalDateTime.now(), this.statusService.getRequestedStatus());
+            Appointment secondAppointment = new Appointment(this.userService.getUserByUsername("doctor@abv.bg"),
+                    this.userService.getUserByUsername("patient@abv.bg"),
+                    LocalDateTime.now(), this.statusService.getConfirmedStatus());
+            Appointment thirdAppointment = new Appointment(this.userService.getUserByUsername("doctor@abv.bg"),
+                    this.userService.getUserByUsername("patient@abv.bg"),
+                    LocalDateTime.now(), this.statusService.getArchivedStatus());
+
+            this.appointmentRepository.saveAll(List.of(firstAppointment, secondAppointment, thirdAppointment));
+
+        }
+    }
+
 }

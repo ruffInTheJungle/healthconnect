@@ -15,4 +15,6 @@ public interface StatusService {
 
     Status getArchivedStatus();
 
+    void initStatuses();
+
 }

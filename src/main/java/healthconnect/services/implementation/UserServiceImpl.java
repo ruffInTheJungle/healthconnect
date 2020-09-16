@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -220,5 +222,72 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         user.setRoles(roles);
         this.userRepository.save(user);
+    }
+
+    @Override
+    public void initUsers() {
+        if (this.userRepository.count() == 0) {
+            User patient = new User();
+            patient.setUsername("patient@abv.bg");
+            patient.setPassword(passwordEncoder.encode("patient"));
+            patient.setEnabled(true);
+            patient.setFirstName("John");
+            patient.setLastName("Smith");
+            patient.setEnabled(true);
+            patient.setRegistrationDate(LocalDateTime.now());
+            patient.setBirthday(LocalDate.of(1991, 04, 05));
+            patient.setSalutation("Mr.");
+
+            Role rolePatient = this.roleService.getNewRole();
+            rolePatient.setName("ROLE_PATIENT");
+            rolePatient.setUser(patient);
+
+            patient.setRoles(List.of(rolePatient));
+
+
+            User doctor = new User();
+            doctor.setUsername("doctor@abv.bg");
+            doctor.setPassword(passwordEncoder.encode("doctor"));
+            doctor.setEnabled(true);
+            doctor.setFirstName("Peter");
+            doctor.setLastName("Griffin");
+            doctor.setEnabled(true);
+            doctor.setRegistrationDate(LocalDateTime.now());
+            doctor.setBirthday(LocalDate.of(1985, 11, 02));
+            doctor.setSalutation("Dr.");
+
+            Role roleDoctor = this.roleService.getNewRole();
+            roleDoctor.setName("ROLE_DOCTOR");
+            roleDoctor.setUser(doctor);
+            doctor.setRoles(List.of(roleDoctor));
+
+            User admin = new User();
+            admin.setUsername("admin@abv.bg");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setEnabled(true);
+            admin.setEnabled(true);
+            admin.setFirstName("Admin");
+            admin.setLastName("Adminov");
+            admin.setEnabled(true);
+            admin.setRegistrationDate(LocalDateTime.now());
+            admin.setBirthday(LocalDate.of(681, 01, 01));
+            admin.setSalutation("Master");
+
+            Role roleAdminDoctor = this.roleService.getNewRole();
+            roleAdminDoctor.setName("ROLE_DOCTOR");
+            roleAdminDoctor.setUser(admin);
+
+            Role roleAdminPatient = this.roleService.getNewRole();
+            roleAdminPatient.setName("ROLE_PATIENT");
+            roleAdminPatient.setUser(admin);
+
+            Role roleAdmin = this.roleService.getNewRole();
+            roleAdmin.setName("ROLE_ADMIN");
+            roleAdmin.setUser(admin);
+
+            admin.setRoles(List.of(roleAdminPatient, roleAdminDoctor, roleAdmin));
+
+            userRepository.saveAll(List.of(patient, doctor, admin));
+        }
     }
 }

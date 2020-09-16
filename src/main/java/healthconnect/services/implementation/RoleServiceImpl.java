@@ -3,9 +3,11 @@ package healthconnect.services.implementation;
 import healthconnect.models.entity.Role;
 import healthconnect.repositories.RoleRepository;
 import healthconnect.services.RoleService;
+import healthconnect.services.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -16,6 +18,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
+
 
     @Transactional
     @Override
@@ -31,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getNewRole() {
-
         return new Role();
     }
+
 }

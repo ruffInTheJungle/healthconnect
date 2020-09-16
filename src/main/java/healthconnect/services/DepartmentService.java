@@ -11,4 +11,6 @@ public interface DepartmentService {
 
     DepartmentServiceModel getDepartmentByName(String name);
 
+    void initDepartments();
+
 }

@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+
+import static healthconnect.messages.ValidationErrorMessages.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 public class AppointmentConfirmationBindingModel {
 
     private String id;
+    @NotNull(message = APPOINTMENT_DATE_MANDATORY)
     private String dateAndTime;
 
 }

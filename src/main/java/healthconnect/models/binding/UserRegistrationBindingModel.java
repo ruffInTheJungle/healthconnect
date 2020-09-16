@@ -1,20 +1,13 @@
 package healthconnect.models.binding;
 
-import healthconnect.models.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static healthconnect.messages.ValidationErrorMessages.*;
 
@@ -38,6 +31,7 @@ public class UserRegistrationBindingModel {
     @NotNull(message = INCORRECT_SALUTATION)
     @Size(min = 2, message = INCORRECT_SALUTATION)
     private String salutation;
+    @NotNull(message = MISSING_BIRTHDAY)
     @Past(message = INCORRECT_BIRTHDAY)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;

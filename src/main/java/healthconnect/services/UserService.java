@@ -30,4 +30,6 @@ public interface UserService {
 
     void setUserWithNewRoles(RoleBindingModel roleBindingModel);
 
+    void initUsers();
+
 }

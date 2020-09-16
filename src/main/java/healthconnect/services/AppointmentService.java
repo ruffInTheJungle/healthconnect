@@ -23,4 +23,6 @@ public interface AppointmentService {
 
     Appointment getAppointmentById(Long id);
 
+    void initAppointments();
+
 }
